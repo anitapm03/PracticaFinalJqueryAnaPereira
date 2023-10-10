@@ -7,6 +7,12 @@
 
     <link href="css/bootstrap.css" rel="stylesheet">
     <link href="css/sweetalert2.min.css" rel="stylesheet">
+
+    <style>
+      label{
+        color: blue;
+      }
+    </style>
 </head>
 <body>
 
@@ -21,17 +27,59 @@
 
 
     <h1>Detalle hospital</h1>
+    <div class="col-auto p-5 text-center">
+      <label>ID: </label>
+      <div id="cajaId"></div><br>
+
+      <label>Nombre: </label>
+      <div id="cajaNombre"></div><br>
+
+      <label>Dirección: </label>
+      <div id="cajaDir"></div><br>
+
+      <label>Teléfono: </label>
+      <div id="cajaTelf"></div><br>
+
+      <label>Número de camas: </label>
+      <div id="cajaCamas"></div><br>
+
+      <button id="volver" class="btn btn-info">Volver</button>
+    </div>
 
     <script src="js/jquery-3.7.1.min.js"></script>
     <script src="js/bootstrap.js"></script>
-    <script src="js/bootstrap.bundle.js"></script>
     <script src="js/sweetalert2.min.js"></script>
     <script>
 
-        $(document).ready(function(){
+      $(document).ready(function(){
+        var urlHospitales = "https://apicrudhospital.azurewebsites.net/";
 
+        //ASI RECUPERAMOS EL ID DE LA URL
+        var parametros = window.location.search;
+        console.log(parametros);
 
+        var param = new URLSearchParams(parametros);
+
+        var id = param.get('idhospital');
+        console.log(id);
+
+        //una vez tenemos la url recogemos la info del hospital
+        var request = "webresources/hospitales/"+id;
+
+        $.getJSON(urlHospitales+request, function(data){
+
+          console.log(data.nombre);
+          $("#cajaId").text(data.idhospital);
+          $("#cajaNombre").text(data.nombre);
+          $("#cajaDir").text(data.direccion);
+          $("#cajaTelf").text(data.telefono);
+          $("#cajaCamas").text(data.camas);
         })
+
+        $("#volver").click(function(){
+          window.location= "paginaPrincipal.html";
+        })
+      })
 
     </script>
 </body>

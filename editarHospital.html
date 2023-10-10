@@ -21,16 +21,91 @@
 
     <h1>Editar hospital</h1>
 
+    <div id="formulario" class="" style="margin-left: 50px; margin-top: 50px;">
+        
+      <label>ID: </label>
+      <div id="cajaId"></div><br>
+
+      <label>Nombre: </label>
+      <input type="text" id="cajaNombre" class="form-control" style="width: 200px;"><br>
+
+      <label>Dirección: </label>
+      <input type="text" id="cajaDir" class="form-control" style="width: 200px;"><br>
+
+      <label>Teléfono: </label>
+      <input type="text" id="cajaTelf" class="form-control" style="width: 200px;"><br>
+
+      <label>Número de camas: </label>
+      <input type="text" id="cajaCamas" class="form-control " style="width: 200px;"><br>
+  
+      <button id="editar" class="btn btn-primary">Editar!!</button>
+    </div>
+
     <script src="js/jquery-3.7.1.min.js"></script>
     <script src="js/bootstrap.js"></script>
     <script src="js/bootstrap.bundle.js"></script>
     <script src="js/sweetalert2.min.js"></script>
     <script>
 
-        $(document).ready(function(){
+      $(document).ready(function(){
 
+        var urlHospitales = "https://apicrudhospital.azurewebsites.net/";
+
+        //ASI RECUPERAMOS EL ID DE LA URL
+        var parametros = window.location.search;
+        console.log(parametros);
+
+        var param = new URLSearchParams(parametros);
+
+        var id = param.get('idhospital');
+        console.log(id);
+
+        $("#cajaId").text(id);
+
+        $("#editar").click(function(){
+
+          var idHospital = parseInt(id);
+          var nombre = $("#cajaNombre").val();
+          var direccion = $("#cajaDir").val();
+          var telf = $("#cajaTelf").val();
+          var camas = parseInt($("#cajaCamas").val());
+
+          var dataJSON = crearHospital(id, nombre, direccion, telf, camas);
+
+          var request = "webresources/hospitales/put";
+
+          //realizamos la llamada
+          $.ajax({
+            "url": urlHospitales + request,
+            "method": "PUT",
+            "contentType": "application/json",
+            "data": dataJSON,
+            success: function(){
+              console.log("Actualizado");
+              window.location="paginaPrincipal.html";
+            },
+            error: function(){
+              console.log("ERROR");
+            }
+        })
 
         })
+
+      })
+
+      function crearHospital(id, nombre, direccion, telf, camas){
+
+        var hospital = new Object();
+
+        hospital.idhospital = id;
+        hospital.nombre = nombre;
+        hospital.direccion = direccion;
+        hospital.telefono = telf;
+        hospital.camas = camas;
+
+        var dataJSON = JSON.stringify(hospital);
+        return dataJSON;
+      }
 
     </script>
 </body>
