@@ -10,8 +10,18 @@
 </head>
 <body>
 
+    <!-- BARRA DE NAVEGACIÓN -->
+    <nav class="navbar navbar-light bg-light">
+        <div class="container-fluid justify-content-start">
+          <a class="navbar-brand" href="paginaPrincipal.html">Inicio</a>
+          <a class="navbar-brand" href="addHospital.html">Añadir Hospital</a>
+        </div>
+        
+      </nav>
 
+    <h1>Lista de hopitales</h1>
 
+    <!-- TABLA DE HOSPITALES -->
     <table id="hospitales" class="table table-hover">
         <thead>
             <tr>
@@ -20,18 +30,13 @@
                 <th>Dirección</th>
                 <th>Teléfono</th>
                 <th>Camas</th>
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody></tbody>
     </table>
 
-    <!-- {
-		"idhospital": 19,
-		"nombre": "Provincial",
-		"direccion": "O' Donell 50",
-		"telefono": "964-4256",
-		"camas": 502
-	 -->
+    
 
     <script src="js/jquery-3.7.1.min.js"></script>
     <script src="js/bootstrap.js"></script>
@@ -54,6 +59,113 @@
 
             var request = "webresources/hospitales";
             //get de hospitales
+
+            $.getJSON(urlHospitales + request, function(data){
+                console.log("Leyendo servicio...");
+
+                $.each(data, function(index, hospital){
+
+                    var fila = $("<tr>");
+                    var columnaId = $("<td>", {"text": hospital.idhospital});
+                    var columnaNombre = $("<td>", {"text": hospital.nombre});
+                    var columnaDir = $("<td>", {"text": hospital.direccion});
+                    var columnaTelf = $("<td>", {"text": hospital.telefono});
+                    var columnaCamas = $("<td>", {"text": hospital.camas});
+                    
+                    var botones = $("<td>");
+
+                    var botonDetalle = $("<button>", {"text": "Detalle", "class": "btn btn-success", "data-idhospital": index});
+                    var botonUpdate = $("<button>", {"text": "Editar", "class": "btn btn-primary", "data-idhospital": index});
+                    var botonDelete = $("<button>", {"text": "Eliminar", "class": "btn btn-danger", "data-idhospital": index});
+
+                    $("#hospitales").append(fila);
+                    $(fila).append(columnaId);
+                    $(fila).append(columnaNombre);
+                    $(fila).append(columnaDir);
+                    $(fila).append(columnaTelf);
+                    $(fila).append(columnaCamas);
+                    
+                    $(botones).append(botonDetalle);
+                    $(botones).append(botonUpdate);
+                    $(botones).append(botonDelete);
+                    $(fila).append(botones);
+
+                    //acciones de los botones
+
+                    
+                    $(botonDetalle).click(function(){
+
+                        var idHospital = $(botonDelete).data("idhospital");
+                        var parametros = "?idhospital="+idHospital;
+
+                        window.location="detalleHospital.html" + parametros;
+                    })
+
+                    $(botonUpdate).click(function(){
+
+                        var idHospital = $(botonDelete).data("idhospital");
+
+                        window.location="editarHospital.html?idhospital="+idHospital;
+
+                    })
+
+                    $(botonDelete).click(function(){
+
+                        var idHospital = $(botonDelete).data("idhospital");
+                        var requestDelete = "webresources/hospitales/delete/"+idHospital;
+                        console.log(idHospital);
+
+                        //SISTEMA DE ALERTA
+                        Swal.fire({
+                            title: '<strong>Seguro que quiere Eliminar?</strong>',
+                            icon: 'info',
+                            showCloseButton: false,
+                            showCancelButton: true,
+                            focusConfirm: false,
+                            confirmButtonText:
+                                'Seguro!',
+                            confirmButtonAriaLabel: 'Seguro!',
+                            cancelButtonText:
+                                'Mejor no',
+                            cancelButtonAriaLabel: 'Mejor no'
+                            }).then((result) => {
+
+                                if (result.isConfirmed) {
+
+                                    //metodo eliminar
+                                    $.ajax({
+                                        "url": urlHospitales+request,
+                                        "method": "DELETE",
+                                        success: function(){
+                                            console.log("Eliminado correctamente");
+                                            Swal.fire({
+                                                icon: 'success',
+                                                title:'Hecho!'
+                                            })
+                                        },
+                                        error: function(){
+                                            console.log("error");
+                                            Swal.fire({
+                                                icon: 'error',
+                                                title:'Ha ocurrido un error!'
+                                            })
+                                        }
+
+                                    })
+                                    
+                                } else {
+                                    
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title:'Operación cancelada!'
+                                    })
+                                }
+                        })
+
+                    })
+                    
+                })
+            })
         }
 
     </script>
