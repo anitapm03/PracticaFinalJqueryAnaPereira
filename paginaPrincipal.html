@@ -74,9 +74,9 @@
                     
                     var botones = $("<td>");
 
-                    var botonDetalle = $("<button>", {"text": "Detalle", "class": "btn btn-success", "data-idhospital": index});
-                    var botonUpdate = $("<button>", {"text": "Editar", "class": "btn btn-primary", "data-idhospital": index});
-                    var botonDelete = $("<button>", {"text": "Eliminar", "class": "btn btn-danger", "data-idhospital": index});
+                    var botonDetalle = $("<button>", {"text": "Detalle", "class": "btn btn-success", "data-idhospital": hospital.idhospital});
+                    var botonUpdate = $("<button>", {"text": "Editar", "class": "btn btn-primary", "data-idhospital": hospital.idhospital});
+                    var botonDelete = $("<button>", {"text": "Eliminar", "class": "btn btn-danger", "data-idhospital": hospital.idhospital});
 
                     $("#hospitales").append(fila);
                     $(fila).append(columnaId);
@@ -134,7 +134,7 @@
 
                                     //metodo eliminar
                                     $.ajax({
-                                        "url": urlHospitales+request,
+                                        "url": urlHospitales+requestDelete,
                                         "method": "DELETE",
                                         success: function(){
                                             console.log("Eliminado correctamente");
@@ -142,6 +142,7 @@
                                                 icon: 'success',
                                                 title:'Hecho!'
                                             })
+                                            location.reload();
                                         },
                                         error: function(){
                                             console.log("error");
@@ -152,6 +153,7 @@
                                         }
 
                                     })
+                                    
                                     
                                 } else {
                                     
