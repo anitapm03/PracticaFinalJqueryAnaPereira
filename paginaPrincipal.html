@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio</title>
+
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/sweetalert2.min.css" rel="stylesheet">
+</head>
+<body>
+
+
+
+    <table id="hospitales" class="table table-hover">
+        <thead>
+            <tr>
+                <th>ID Hospital</th>
+                <th>Nombre</th>
+                <th>Dirección</th>
+                <th>Teléfono</th>
+                <th>Camas</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <!-- {
+		"idhospital": 19,
+		"nombre": "Provincial",
+		"direccion": "O' Donell 50",
+		"telefono": "964-4256",
+		"camas": 502
+	 -->
+
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/bootstrap.bundle.js"></script>
+    <script src="js/sweetalert2.min.js"></script>
+
+    <script>
+
+        var urlHospitales = "https://apicrudhospital.azurewebsites.net/";
+
+        $(document).ready(function(){
+
+            cargarHospitales();
+
+
+
+        })
+
+        function cargarHospitales(){
+
+            var request = "webresources/hospitales";
+            //get de hospitales
+        }
+
+    </script>
+    
+</body>
+</html>
